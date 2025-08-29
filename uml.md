@@ -6,7 +6,7 @@ classDiagram
         PEQUENO
         MEDIO
         SUV
-        +double valorDiaria
+        +getValorDiaria() double
     }
 
     %% CLASSES PRINCIPAIS
@@ -15,24 +15,37 @@ classDiagram
         -String nome
         -TipoVeiculo tipo
         -boolean disponivel
-        +alugar() void
-        +devolver() void
+        +getPlaca() String
+        +getNome() String
+        +getTipo() TipoVeiculo
+        +isDisponivel() boolean
+        +setDisponivel(boolean) void
+        +equals(Object) boolean
+        +hashCode() int
     }
 
     class Cliente {
         <<abstract>>
         -String id
         -String nome
-        -List~Aluguel~ historicoAlugueis
+        +getId() String
+        +getNome() String
+        +setNome(String) void
         +calcularDesconto(int dias) double
+        +equals(Object) boolean
+        +hashCode() int
     }
 
     class PessoaFisica {
         -String cpf
+        +getCpf() String
+        +calcularDesconto(int dias) double
     }
 
     class PessoaJuridica {
         -String cnpj
+        +getCnpj() String
+        +calcularDesconto(int dias) double
     }
 
     class Aluguel {
@@ -44,22 +57,16 @@ classDiagram
         -Veiculo veiculo
         -Cliente cliente
         -double valorTotal
+        +getId() String
+        +getDataHoraAluguel() LocalDateTime
+        +getDataHoraDevolucao() LocalDateTime
+        +getLocalAluguel() String
+        +getLocalDevolucao() String
+        +getVeiculo() Veiculo
+        +getCliente() Cliente
+        +getValorTotal() double
         +devolver(LocalDateTime, String) void
         -calcularValorTotal() void
-    }
-
-    class Locadora {
-        -String nome
-        -List~Veiculo~ veiculos
-        -List~Cliente~ clientes
-        -List~Aluguel~ alugueis
-        +cadastrarVeiculo(Veiculo) void
-        +alterarVeiculo(String, Veiculo) void
-        +buscarVeiculo(String) List~Veiculo~
-        +cadastrarCliente(Cliente) void
-        +alterarCliente(String, Cliente) void
-        +alugarVeiculo(String, String, LocalDateTime, String) Aluguel
-        +devolverVeiculo(String, LocalDateTime, String) Aluguel
     }
 
     %% RELACIONAMENTOS
@@ -69,9 +76,5 @@ classDiagram
     Veiculo "1" -- "1" TipoVeiculo : possui
     Veiculo "1" -- "*" Aluguel : está em
     Cliente "1" -- "*" Aluguel : realiza
-    
-    Locadora "1" -- "*" Veiculo : gerencia
-    Locadora "1" -- "*" Cliente : possui
-    Locadora "1" -- "*" Aluguel : controla
 
 ```
