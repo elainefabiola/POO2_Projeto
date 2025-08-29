@@ -45,4 +45,6 @@ O projeto é uma aplicação de console que possibilita cadastrar, alterar e bus
 ## 👥 Equipe
 
 * [Elaine Fabiola Soares](https://github.com/elainefabiola)
-* 
+* [Matheus Gomes de Moura](https://github.com/Demouraa)
+* [Roberto Luiz de Andrade Barreto](https://github.com/RLdAB)
+* [Vinícius Nunes de Bona](https://github.com/viniciusbona)
