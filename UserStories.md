@@ -177,7 +177,7 @@
 - ✅ **CA010.1** - Dados devem ser salvos automaticamente após cada operação
 - ✅ **CA010.2** - Sistema deve carregar dados ao iniciar
 - ✅ **CA010.3** - Deve manter arquivos separados: veiculos.txt, clientes.txt, alugueis.txt
-- ✅ **CA010.4** - Deve tratar erros de leitura/escrita graciosamente
+- ✅ **CA010.4** - Deve tratar erros de leitura/escrita
 
 ---
 
@@ -193,4 +193,3 @@
 - ✅ **CA011.2** - Deve permitir voltar ao menu anterior
 - ✅ **CA011.3** - Deve validar opções inválidas
 - ✅ **CA011.4** - Deve permitir sair do sistema
-- ✅ **CA011.5** - Interface deve ser clara e user-friendly
