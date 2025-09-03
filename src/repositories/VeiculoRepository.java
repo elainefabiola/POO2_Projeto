@@ -1,7 +1,6 @@
-package repository;
+package repositories;
 
-import model.Veiculo;
-
+import database.Veiculo;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
  *  - Cadastrar, alterar, buscar por parte do nome
  *  - Alugar/Devolver (usa flag disponivel)
  */
-public class VeiculoRepositorio extends RepositorioMemoria<Veiculo, String> {
+public class VeiculoRepository extends RepositorioMemoria<Veiculo, String> {
 
     @Override
     public String getIdentificador(Veiculo veiculo) {

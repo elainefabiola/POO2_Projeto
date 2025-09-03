@@ -1,4 +1,4 @@
-package model; //Elaine Fabiola Soares 
+package database;
 
 public class PessoaJuridica extends Cliente {
     private String cnpj;
@@ -21,4 +21,3 @@ public class PessoaJuridica extends Cliente {
         return 0.0; // Sem desconto
     }
 }
-

@@ -1,4 +1,4 @@
-package model;
+package database;
 
 /**
  * Entidade de domínio baseada no UML do grupo.

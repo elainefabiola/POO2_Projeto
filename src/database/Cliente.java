@@ -1,4 +1,4 @@
-package model; //Elaine Fabiola Soares 
+package database;
 
 public abstract class Cliente {
     private String documento;
