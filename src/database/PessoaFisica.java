@@ -4,8 +4,10 @@ public class PessoaFisica extends Cliente {
     private String cpf;
 
     public PessoaFisica(String cpf, String nome) {
-        super(cpf, nome);
-        this.cpf = cpf;
+        //super(cpf, nome);
+
+        super.setDocumento(cpf);
+        super.setNome(nome);
     }
 
     public String getCpf() {
