@@ -4,11 +4,25 @@ import database.Cliente;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClienteRepository extends RepositorioMemoria<Cliente, String> {
+public class ClienteRepository {
 
-    @Override
+
     public String getIdentificador(Cliente cliente) {
         return cliente.getDocumento();
+    }
+
+    private List<Cliente> clienteList;
+
+    public ClienteRepository(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
+    }
+
+    public void salvar(Cliente cliente){
+        clienteList.add(cliente);
+    }
+
+    public List<Cliente> listarTodos() {
+        return clienteList;
     }
 
     public List<Cliente> buscarPorNomeParcial(String termo) {
