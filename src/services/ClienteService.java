@@ -25,9 +25,10 @@ public class ClienteService {
         repository.salvar(cliente);
     }
 
-    public Cliente buscarPorDocumento(String documento) {
-        return repository.buscarPorId(documento);
-    }
+
+    //public Cliente buscarPorDocumento(String documento) {
+//        return repository.buscarPorId(documento);
+//    }
 
     public List<Cliente> buscarPorNome(String nome) {
         return repository.buscarPorNomeParcial(nome);
@@ -37,11 +38,11 @@ public class ClienteService {
         return repository.listarTodos();
     }
 
-    public void removerCliente(String documento) {
-        repository.remover(documento);
-    }
-
-    public boolean clienteExiste(String documento) {
-        return repository.existe(documento);
-    }
+//    public void removerCliente(String documento) {
+//        repository.remover(documento);
+//    }
+//
+//    public boolean clienteExiste(String documento) {
+//        return repository.existe(documento);
+//    }
 }
