@@ -9,34 +9,34 @@ public class Main {
     public static void main(String[] args) {
         // BASE DE DADOS
         List<Cliente> clientes = new ArrayList<>();
+        List<Veiculo> veiculos = new ArrayList<>();
+        List<Aluguel> alugueis = new ArrayList<>();
 
+        // REPOSITÓRIOS
+        ClienteRepository clienteRepo = new ClienteRepository(clientes);
+        VeiculoRepository veiculoRepo = new VeiculoRepository(veiculos);
+        AluguelRepository aluguelRepo = new AluguelRepository(alugueis);
 
-        ClienteRepository cr = new ClienteRepository(clientes); ///salvar na base, deletar, listar
-        ClienteService cs = new ClienteService(cr); //regras de negocio, validacoes, possuipendencia
+        // SERVICES (regras de negócio)
+        ClienteService clienteService = new ClienteService(clienteRepo);
+        VeiculoService veiculoService = new VeiculoService(veiculoRepo);
+        AluguelService aluguelService = new AluguelService(aluguelRepo, clienteRepo, veiculoRepo);
 
-        cs.cadastrarCliente(new PessoaFisica("78363786", "Ana"));
-        cs.cadastrarCliente(new PessoaFisica("12345", "joao"));
+        // DADOS INICIAIS PARA TESTE
+        try {
+            clienteService.cadastrarCliente(new PessoaFisica("12345678900", "Ana Silva"));
+            clienteService.cadastrarCliente(new PessoaFisica("98765432100", "João Santos"));
+            clienteService.cadastrarCliente(new PessoaJuridica("12345678000100", "Tech Solutions Ltda"));
 
+            veiculoService.cadastrarVeiculo(new Veiculo("ABC-1234", "Gol 1.0", TipoVeiculo.PEQUENO));
+            veiculoService.cadastrarVeiculo(new Veiculo("DEF-5678", "Civic 2.0", TipoVeiculo.MEDIO));
+            veiculoService.cadastrarVeiculo(new Veiculo("GHI-9012", "Hilux 2.8", TipoVeiculo.SUV));
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar dados iniciais: " + e.getMessage());
+        }
 
-        new MenuPrincipal(cs).start();
-
-//
-//
-//        List<Veiculo> veiculos = new ArrayList<>();
-//        List<Aluguel> alugueis = new ArrayList<>();
-//
-//        // REPOSITÓRIOS
-//        ClienteRepository cr = new ClienteRepository();
-//        VeiculoRepository vr = new VeiculoRepository();
-//        AluguelRepository ar = new AluguelRepository();
-//
-//        // SERVICES (regras de negócio)
-//        ClienteService cs = new ClienteService(cr);
-//        VeiculoService vs = new VeiculoService(vr);
-//        AluguelService as = new AluguelService(ar, vr, cr);
-//
-//        // VIEW (interface do usuário)
-//        MenuPrincipal mp = new MenuPrincipal(cs, vs, as);
-//        mp.start(); // inicia o menu de interação
+        // VIEW (interface do usuário)
+        MenuPrincipal menuPrincipal = new MenuPrincipal(clienteService, veiculoService, aluguelService);
+        menuPrincipal.start();
     }
 }
