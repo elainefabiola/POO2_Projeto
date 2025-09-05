@@ -141,7 +141,7 @@ java Main
 ```
 
 ### 📋 **Pré-requisitos**
-- **Java 8+** (recomendado Java 11+)
+- **Java OpenJDK 21** (necessário para compatibilidade)
 - **Terminal/Console** para interação
 - **Sistema operacional**: Windows, macOS, Linux
 
@@ -278,7 +278,7 @@ private LocalDateTime lerDataHoraDevolucao(LocalDateTime dataRetirada) {
 
 ## 🛠️ Tecnologias e APIs Utilizadas
 
-- **Java 8+** com recursos modernos
+- **Java OpenJDK 21** com recursos modernos
 - **LocalDateTime API** para manipulação precisa de data/hora
 - **Stream API** para operações funcionais e filtros
 - **Optional** para tratamento seguro de valores ausentes
