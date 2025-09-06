@@ -2,6 +2,7 @@ package repositories;
 
 import database.Cliente;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ClienteRepository {
@@ -31,5 +32,11 @@ public class ClienteRepository {
         return listarTodos().stream()
                 .filter(c -> c.getNome() != null && c.getNome().toLowerCase().contains(t))
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Cliente> buscarPorDocumento(String documento) {
+        return clienteList.stream()
+                .filter(c -> c.getDocumento().equals(documento))
+                .findFirst();
     }
 }
