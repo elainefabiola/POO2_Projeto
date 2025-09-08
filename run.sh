@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Script para compilar e executar o Sistema ADA LocateCar
 # Requer Java OpenJDK 21
