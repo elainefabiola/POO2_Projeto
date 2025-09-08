@@ -28,7 +28,7 @@ public class VeiculoService {
         
         Optional<Veiculo> existente = repository.buscarPorPlaca(veiculo.getPlaca());
         if (existente.isPresent()) {
-            throw new IllegalArgumentException("Placa já cadastrada");
+                throw new IllegalArgumentException("Já existe um veículo com esta placa cadastrado.");
         }
         
         repository.salvar(veiculo);

@@ -21,6 +21,11 @@ public class ClienteService {
         if (cliente.getDocumento() == null || cliente.getDocumento().trim().isEmpty()) {
             throw new IllegalArgumentException("Documento do cliente é obrigatório");
         }
+
+            // Verifica se já existe cliente com o mesmo documento (CPF/CNPJ)
+            if (repository.buscarPorDocumento(cliente.getDocumento()).isPresent()) {
+                throw new IllegalArgumentException("Já existe um cliente com este CPF/CNPJ cadastrado.");
+            }
         
         repository.salvar(cliente);
         repository.salvarEmArquivo();
