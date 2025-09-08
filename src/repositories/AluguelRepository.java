@@ -14,15 +14,16 @@ public class AluguelRepository {
         this.aluguelList = aluguelList;
     }
 
-        public void salvarEmArquivo() {
-            ArquivoUtil.salvarLista(ARQUIVO_ALUGUEIS, aluguelList);
-        }
+    public void salvarEmArquivo() {
+        ArquivoUtil.salvarLista(ARQUIVO_ALUGUEIS, aluguelList);
+    }
 
-        public void carregarDeArquivo() {
-            this.aluguelList = ArquivoUtil.lerLista(ARQUIVO_ALUGUEIS);
-        }
+    public void carregarDeArquivo() {
+        this.aluguelList = ArquivoUtil.lerLista(ARQUIVO_ALUGUEIS);
+    }
 
     public void salvar(Aluguel aluguel) {
+        carregarDeArquivo();
         if (buscarPorId(aluguel.getId()).isEmpty()) {
             aluguelList.add(aluguel);
         } else {
@@ -30,31 +31,37 @@ public class AluguelRepository {
             aluguelList.removeIf(a -> a.getId().equals(aluguel.getId()));
             aluguelList.add(aluguel);
         }
+        salvarEmArquivo();
     }
 
     public Optional<Aluguel> buscarPorId(String id) {
+        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst();
     }
 
     public List<Aluguel> listarTodos() {
+        carregarDeArquivo();
         return aluguelList;
     }
 
     public List<Aluguel> buscarAtivos() {
+        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(Aluguel::isAtivo)
                 .collect(Collectors.toList());
     }
 
     public List<Aluguel> buscarPorCliente(String documento) {
+        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getCliente().getDocumento().equals(documento))
                 .collect(Collectors.toList());
     }
 
     public List<Aluguel> buscarPorVeiculo(String placa) {
+        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getVeiculo().getPlaca().equals(placa))
                 .collect(Collectors.toList());
