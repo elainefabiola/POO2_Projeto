@@ -29,11 +29,15 @@ public class Main {
 
         // DADOS INICIAIS PARA TESTE
         try {
-            clienteService.cadastrarCliente(new PessoaFisica("abcdefgh901", "Ana Silva"));
-            clienteService.cadastrarCliente(new PessoaFisica("987654321", "João Santos"));
+            clienteService.cadastrarCliente(new PessoaFisica("12345678901", "Ana Silva"));
+            clienteService.cadastrarCliente(new PessoaFisica("98765432100", "João Santos"));
             clienteService.cadastrarCliente(new PessoaJuridica("12345678000100", "Tech Solutions Ltda"));
 
-            veiculoService.cadastrarVeiculo(new Veiculo("ABC-1234", "Gol 1.0", TipoVeiculo.PEQUENO));
+            //veiculoService.cadastrarVeiculo(new Veiculo("ABC-avc", "Gol 1.0", TipoVeiculo.PEQUENO));
+            //veiculoService.cadastrarVeiculo(new Veiculo("DEF-adf", "Civic 2.0", TipoVeiculo.MEDIO));
+            //veiculoService.cadastrarVeiculo(new Veiculo("990-9012", "Hilux 2.8", TipoVeiculo.SUV));
+
+            veiculoService.cadastrarVeiculo(new Veiculo("ABC-1456", "Gol 1.0", TipoVeiculo.PEQUENO));
             veiculoService.cadastrarVeiculo(new Veiculo("DEF-5678", "Civic 2.0", TipoVeiculo.MEDIO));
             veiculoService.cadastrarVeiculo(new Veiculo("GHI-9012", "Hilux 2.8", TipoVeiculo.SUV));
         } catch (Exception e) {

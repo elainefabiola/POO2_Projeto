@@ -19,6 +19,11 @@ public class VeiculoService {
         if (veiculo.getPlaca() == null || veiculo.getPlaca().trim().isEmpty()) {
             throw new IllegalArgumentException("Placa do veículo é obrigatória");
         }
+        // Validação de placa: padrão brasileiro antigo (ABC-1234) ou Mercosul (ABC1D23)
+        String placa = veiculo.getPlaca();
+        if (!placa.matches("[A-Z]{3}-\\d{4}") && !placa.matches("[A-Z]{3}\\d[A-Z]\\d{2}")) {
+            throw new IllegalArgumentException("Placa inválida. Use o formato ABC-1234 ou ABC1D23.");
+        }
         if (veiculo.getNome() == null || veiculo.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("Nome do veículo é obrigatório");
         }

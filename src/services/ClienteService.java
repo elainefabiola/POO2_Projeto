@@ -26,18 +26,18 @@ public class ClienteService {
         // Validação básica de CPF (11 dígitos numéricos)
         if (cliente instanceof model.PessoaFisica) {
             if (!doc.matches("\\d{11}")) {
-                throw new IllegalArgumentException("CPF deve conter exatamente 11 numeros.");
+                throw new IllegalArgumentException("CPF deve conter apenas 11 numeros, e nada de letras");
             }
         }
         // Validação básica de CNPJ (14 dígitos numéricos)
         if (cliente instanceof model.PessoaJuridica) {
             if (!doc.matches("\\d{14}")) {
-                throw new IllegalArgumentException("CNPJ deve conter exatamente 14 numeros.");
+                throw new IllegalArgumentException("CNPJ deve conter apenas 14 numeros, e nada de letras");
             }
         }
             // Verifica se já existe cliente com o mesmo documento (CPF/CNPJ)
             if (repository.buscarPorDocumento(cliente.getDocumento()).isPresent()) {
-                throw new IllegalArgumentException("Já existe um cliente com este CPF/CNPJ cadastrado.");
+                throw new IllegalArgumentException("Já existe um cliente com este CPF/CNPJ cadastrado");
             }
         
         repository.salvar(cliente);
