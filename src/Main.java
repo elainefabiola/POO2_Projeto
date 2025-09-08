@@ -29,8 +29,8 @@ public class Main {
 
         // DADOS INICIAIS PARA TESTE
         try {
-            clienteService.cadastrarCliente(new PessoaFisica("12345678900", "Ana Silva"));
-            clienteService.cadastrarCliente(new PessoaFisica("98765432100", "João Santos"));
+            clienteService.cadastrarCliente(new PessoaFisica("abcdefgh901", "Ana Silva"));
+            clienteService.cadastrarCliente(new PessoaFisica("987654321", "João Santos"));
             clienteService.cadastrarCliente(new PessoaJuridica("12345678000100", "Tech Solutions Ltda"));
 
             veiculoService.cadastrarVeiculo(new Veiculo("ABC-1234", "Gol 1.0", TipoVeiculo.PEQUENO));
