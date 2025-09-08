@@ -1,10 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
+import model.*;
 import repositories.*;
 import services.*;
 import views.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import model.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +16,11 @@ public class Main {
         ClienteRepository clienteRepo = new ClienteRepository(clientes);
         VeiculoRepository veiculoRepo = new VeiculoRepository(veiculos);
         AluguelRepository aluguelRepo = new AluguelRepository(alugueis);
+
+        // Carregar dados persistidos
+        clienteRepo.carregarDeArquivo();
+        veiculoRepo.carregarDeArquivo();
+        aluguelRepo.carregarDeArquivo();
 
         // SERVICES (regras de negócio)
         ClienteService clienteService = new ClienteService(clienteRepo);

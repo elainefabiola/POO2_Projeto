@@ -51,9 +51,11 @@ public class AluguelService {
         // Marcar veículo como indisponível
         veiculo.setDisponivel(false);
         veiculoRepository.salvar(veiculo);
+        veiculoRepository.salvarEmArquivo();
         
         // Salvar aluguel
         aluguelRepository.salvar(aluguel);
+        aluguelRepository.salvarEmArquivo();
         
         return aluguel;
     }
@@ -76,9 +78,11 @@ public class AluguelService {
         Veiculo veiculo = aluguel.getVeiculo();
         veiculo.setDisponivel(true);
         veiculoRepository.salvar(veiculo);
+        veiculoRepository.salvarEmArquivo();
         
         // Atualizar aluguel
         aluguelRepository.salvar(aluguel);
+        aluguelRepository.salvarEmArquivo();
     }
 
     public List<Aluguel> listarAtivos() {

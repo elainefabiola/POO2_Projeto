@@ -1,10 +1,9 @@
 package services;
 
-import repositories.VeiculoRepository;
 import java.util.List;
 import java.util.Optional;
-
 import model.Veiculo;
+import repositories.VeiculoRepository;
 
 public class VeiculoService {
     private final VeiculoRepository repository;
@@ -33,6 +32,7 @@ public class VeiculoService {
         }
         
         repository.salvar(veiculo);
+        repository.salvarEmArquivo();
     }
 
     public Optional<Veiculo> buscarPorPlaca(String placa) {
@@ -65,5 +65,6 @@ public class VeiculoService {
         }
         
         repository.salvar(veiculo);
+        repository.salvarEmArquivo();
     }
 }

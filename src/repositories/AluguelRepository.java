@@ -4,13 +4,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import model.Aluguel;
+import utils.ArquivoUtil;
 
 public class AluguelRepository {
     private List<Aluguel> aluguelList;
+    private static final String ARQUIVO_ALUGUEIS = "aluguels.dat";
 
     public AluguelRepository(List<Aluguel> aluguelList) {
         this.aluguelList = aluguelList;
     }
+
+        public void salvarEmArquivo() {
+            ArquivoUtil.salvarLista(ARQUIVO_ALUGUEIS, aluguelList);
+        }
+
+        public void carregarDeArquivo() {
+            this.aluguelList = ArquivoUtil.lerLista(ARQUIVO_ALUGUEIS);
+        }
 
     public void salvar(Aluguel aluguel) {
         if (buscarPorId(aluguel.getId()).isEmpty()) {
