@@ -1,14 +1,13 @@
 package views;
 
 import database.*;
-import services.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import services.*;
 
 public class MenuPrincipal {
     private ClienteService clienteService;
@@ -234,7 +233,7 @@ class MenuVeiculo {
             System.out.print("Escolha o tipo: ");
             
             int tipoOpcao = scanner.nextInt();
-            TipoVeiculo tipo;
+            TipoVeiculo tipo = null;
             
             switch (tipoOpcao) {
                 case 1 -> tipo = TipoVeiculo.PEQUENO;
