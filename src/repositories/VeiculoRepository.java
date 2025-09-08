@@ -14,35 +14,38 @@ public class VeiculoRepository {
         this.veiculoList = veiculoList;
     }
 
-        public void salvarEmArquivo() {
-            ArquivoUtil.salvarLista(ARQUIVO_VEICULOS, veiculoList);
-        }
+    public void salvarEmArquivo() {
+        ArquivoUtil.salvarLista(ARQUIVO_VEICULOS, veiculoList);
+    }
 
-        public void carregarDeArquivo() {
-            this.veiculoList = ArquivoUtil.lerLista(ARQUIVO_VEICULOS);
-        }
+    public void carregarDeArquivo() {
+        this.veiculoList = ArquivoUtil.lerLista(ARQUIVO_VEICULOS);
+    }
 
     public void salvar(Veiculo veiculo) {
         if (buscarPorPlaca(veiculo.getPlaca()).isEmpty()) {
             veiculoList.add(veiculo);
         } else {
-            // Atualizar veículo existente
             veiculoList.removeIf(v -> v.getPlaca().equals(veiculo.getPlaca()));
             veiculoList.add(veiculo);
         }
+        salvarEmArquivo();
     }
 
     public Optional<Veiculo> buscarPorPlaca(String placa) {
+        carregarDeArquivo();
         return veiculoList.stream()
                 .filter(v -> v.getPlaca().equals(placa))
                 .findFirst();
     }
 
     public List<Veiculo> listarTodos() {
+        carregarDeArquivo();
         return veiculoList;
     }
 
     public List<Veiculo> buscarPorNomeParcial(String termo) {
+        carregarDeArquivo();
         if (termo == null) termo = "";
         final String t = termo.toLowerCase();
         return listarTodos().stream()
@@ -51,6 +54,7 @@ public class VeiculoRepository {
     }
 
     public List<Veiculo> buscarDisponiveis() {
+        carregarDeArquivo();
         return listarTodos().stream()
                 .filter(Veiculo::isDisponivel)
                 .collect(Collectors.toList());
