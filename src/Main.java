@@ -1,9 +1,10 @@
-import database.*;
 import repositories.*;
 import services.*;
 import views.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.*;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,9 +1,9 @@
 package repositories;
 
-import database.Cliente;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import model.Cliente;
 
 public class ClienteRepository {
 

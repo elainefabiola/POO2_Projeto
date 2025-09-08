@@ -1,9 +1,9 @@
 package repositories;
 
-import database.Aluguel;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import model.Aluguel;
 
 public class AluguelRepository {
     private List<Aluguel> aluguelList;

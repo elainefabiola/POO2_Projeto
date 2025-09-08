@@ -1,9 +1,10 @@
 package services;
 
-import database.Veiculo;
 import repositories.VeiculoRepository;
 import java.util.List;
 import java.util.Optional;
+
+import model.Veiculo;
 
 public class VeiculoService {
     private final VeiculoRepository repository;

@@ -1,8 +1,9 @@
 package services;
 
-import database.Cliente;
 import repositories.ClienteRepository;
 import java.util.List;
+
+import model.Cliente;
 
 public class ClienteService {
     private final ClienteRepository repository;

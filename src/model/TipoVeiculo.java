@@ -1,4 +1,4 @@
-package database;
+package model;
 
 /**
  * Enum enriquecido com valor de diária e helper de cálculo.

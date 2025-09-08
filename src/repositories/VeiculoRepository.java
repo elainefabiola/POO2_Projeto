@@ -1,9 +1,9 @@
 package repositories;
 
-import database.Veiculo;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import model.Veiculo;
 
 public class VeiculoRepository {
     private List<Veiculo> veiculoList;
