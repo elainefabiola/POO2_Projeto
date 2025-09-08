@@ -1,9 +1,10 @@
 package repositories;
 
-import database.Cliente;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import model.Cliente;
+import utils.ArquivoUtil;
 
 public class ClienteRepository {
 
@@ -13,10 +14,19 @@ public class ClienteRepository {
     }
 
     private List<Cliente> clienteList;
+    private static final String ARQUIVO_CLIENTES = "clientes.dat";
 
     public ClienteRepository(List<Cliente> clienteList) {
         this.clienteList = clienteList;
     }
+
+        public void salvarEmArquivo() {
+            ArquivoUtil.salvarLista(ARQUIVO_CLIENTES, clienteList);
+        }
+
+        public void carregarDeArquivo() {
+            this.clienteList = ArquivoUtil.lerLista(ARQUIVO_CLIENTES);
+        }
 
     public void salvar(Cliente cliente){
         clienteList.add(cliente);

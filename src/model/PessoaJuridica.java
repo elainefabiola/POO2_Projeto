@@ -1,4 +1,4 @@
-package database;
+package model;
 
 public class PessoaJuridica extends Cliente {
     private String cnpj;

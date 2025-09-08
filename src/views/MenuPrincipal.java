@@ -1,15 +1,13 @@
 package views;
 
-import database.*;
-import services.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import model.*;
+import services.*;
 
 public class MenuPrincipal {
     private ClienteService clienteService;
@@ -32,20 +30,14 @@ public class MenuPrincipal {
             int opcao = lerOpcao();
 
             switch (opcao) {
-                case 1:
-                    new MenuCliente(clienteService, scanner).iniciar();
-                    break;
-                case 2:
-                    new MenuVeiculo(veiculoService, scanner).iniciar();
-                    break;
-                case 3:
-                    new MenuAluguel(aluguelService, clienteService, veiculoService, scanner).iniciar();
-                    break;
-                case 0:
+                case 1 -> new MenuCliente(clienteService, scanner).iniciar();
+                case 2 -> new MenuVeiculo(veiculoService, scanner).iniciar();
+                case 3 -> new MenuAluguel(aluguelService, clienteService, veiculoService, scanner).iniciar();
+                case 0 -> {
                     System.out.println("Saindo do sistema... Obrigado por usar o ADA LocateCar!");
                     return;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                }
+                default -> System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
@@ -87,19 +79,11 @@ class MenuCliente {
             int opcao = lerOpcao();
 
             switch (opcao) {
-                case 1:
-                    cadastrarCliente();
-                    break;
-                case 2:
-                    listarClientes();
-                    break;
-                case 3:
-                    buscarClientePorNome();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Opção inválida!");
+                case 1 -> cadastrarCliente();
+                case 2 -> listarClientes();
+                case 3 -> buscarClientePorNome();
+                case 0 -> {return;}
+                default -> System.out.println("Opção inválida!");
             }
         }
     }
@@ -211,22 +195,12 @@ class MenuVeiculo {
             int opcao = lerOpcao();
 
             switch (opcao) {
-                case 1:
-                    cadastrarVeiculo();
-                    break;
-                case 2:
-                    listarVeiculos();
-                    break;
-                case 3:
-                    listarDisponiveis();
-                    break;
-                case 4:
-                    buscarVeiculoPorNome();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Opção inválida!");
+                case 1 -> cadastrarVeiculo();
+                case 2 -> listarVeiculos();
+                case 3 -> listarDisponiveis();
+                case 4 -> buscarVeiculoPorNome();
+                case 0 -> { return; }
+                default -> System.out.println("Opção inválida!");
             }
         }
     }
@@ -259,21 +233,13 @@ class MenuVeiculo {
             System.out.print("Escolha o tipo: ");
             
             int tipoOpcao = scanner.nextInt();
-            TipoVeiculo tipo;
+            TipoVeiculo tipo = null;
             
             switch (tipoOpcao) {
-                case 1:
-                    tipo = TipoVeiculo.PEQUENO;
-                    break;
-                case 2:
-                    tipo = TipoVeiculo.MEDIO;
-                    break;
-                case 3:
-                    tipo = TipoVeiculo.SUV;
-                    break;
-                default:
-                    System.out.println("Tipo inválido!");
-                    return;
+                case 1 -> tipo = TipoVeiculo.PEQUENO;
+                case 2 -> tipo = TipoVeiculo.MEDIO;
+                case 3 -> tipo = TipoVeiculo.SUV;
+                default -> System.out.println("Tipo inválido!");
             }
             
             Veiculo veiculo = new Veiculo(placa, nome, tipo);
@@ -370,22 +336,12 @@ class MenuAluguel {
             int opcao = lerOpcao();
 
             switch (opcao) {
-                case 1:
-                    alugarVeiculo();
-                    break;
-                case 2:
-                    devolverVeiculo();
-                    break;
-                case 3:
-                    listarAlugueisAtivos();
-                    break;
-                case 4:
-                    listarTodosAlugueis();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Opção inválida!");
+                case 1 -> alugarVeiculo();
+                case 2 -> devolverVeiculo();
+                case 3 -> listarAlugueisAtivos();
+                case 4 -> listarTodosAlugueis();
+                case 0 -> {return;}
+                default -> System.out.println("Opção inválida!");
             }
         }
     }

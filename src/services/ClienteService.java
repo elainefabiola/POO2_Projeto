@@ -1,8 +1,8 @@
 package services;
 
-import database.Cliente;
-import repositories.ClienteRepository;
 import java.util.List;
+import model.Cliente;
+import repositories.ClienteRepository;
 
 public class ClienteService {
     private final ClienteRepository repository;
@@ -23,6 +23,7 @@ public class ClienteService {
         }
         
         repository.salvar(cliente);
+        repository.salvarEmArquivo();
     }
 
 

@@ -1,15 +1,15 @@
 package services;
 
-import database.Aluguel;
-import database.Cliente;
-import database.Veiculo;
-import repositories.AluguelRepository;
-import repositories.ClienteRepository;
-import repositories.VeiculoRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import model.Aluguel;
+import model.Cliente;
+import model.Veiculo;
+import repositories.AluguelRepository;
+import repositories.ClienteRepository;
+import repositories.VeiculoRepository;
 
 public class AluguelService {
     private final AluguelRepository aluguelRepository;
@@ -51,9 +51,11 @@ public class AluguelService {
         // Marcar veículo como indisponível
         veiculo.setDisponivel(false);
         veiculoRepository.salvar(veiculo);
+        veiculoRepository.salvarEmArquivo();
         
         // Salvar aluguel
         aluguelRepository.salvar(aluguel);
+        aluguelRepository.salvarEmArquivo();
         
         return aluguel;
     }
@@ -76,9 +78,11 @@ public class AluguelService {
         Veiculo veiculo = aluguel.getVeiculo();
         veiculo.setDisponivel(true);
         veiculoRepository.salvar(veiculo);
+        veiculoRepository.salvarEmArquivo();
         
         // Atualizar aluguel
         aluguelRepository.salvar(aluguel);
+        aluguelRepository.salvarEmArquivo();
     }
 
     public List<Aluguel> listarAtivos() {

@@ -1,16 +1,26 @@
 package repositories;
 
-import database.Veiculo;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import model.Veiculo;
+import utils.ArquivoUtil;
 
 public class VeiculoRepository {
     private List<Veiculo> veiculoList;
+    private static final String ARQUIVO_VEICULOS = "veiculos.dat";
 
     public VeiculoRepository(List<Veiculo> veiculoList) {
         this.veiculoList = veiculoList;
     }
+
+        public void salvarEmArquivo() {
+            ArquivoUtil.salvarLista(ARQUIVO_VEICULOS, veiculoList);
+        }
+
+        public void carregarDeArquivo() {
+            this.veiculoList = ArquivoUtil.lerLista(ARQUIVO_VEICULOS);
+        }
 
     public void salvar(Veiculo veiculo) {
         if (buscarPorPlaca(veiculo.getPlaca()).isEmpty()) {

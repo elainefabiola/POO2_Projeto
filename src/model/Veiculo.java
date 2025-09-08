@@ -1,4 +1,4 @@
-package database;
+package model;
 
 /**
  * Entidade de domínio baseada no UML do grupo.
@@ -13,7 +13,9 @@ package database;
  *  - equals/hashCode por Placa (chave natural) para uso seguro em coleções.
  *  - toString para logs/console.
  */
-public class Veiculo {
+import java.io.Serializable;
+
+public class Veiculo implements Serializable {
 
     private String placa;
     private String nome;            // no código do professor era "modelo"; o UML usa "nome"
