@@ -51,7 +51,6 @@ public class AluguelService {
         // Marcar veículo como indisponível
         veiculo.setDisponivel(false);
         veiculoRepository.salvar(veiculo);
-        veiculoRepository.salvarEmArquivo();
         
         // Salvar aluguel
         aluguelRepository.salvar(aluguel);
@@ -74,11 +73,14 @@ public class AluguelService {
         // Finalizar aluguel
         aluguel.finalizar(devolucao, localDevolucao);
         
-        // Marcar veículo como disponível
-        Veiculo veiculo = aluguel.getVeiculo();
-        veiculo.setDisponivel(true);
-        veiculoRepository.salvar(veiculo);
-        veiculoRepository.salvarEmArquivo();
+        // Buscar o veículo atual na lista em memória para manter referência
+        String placaVeiculo = aluguel.getVeiculo().getPlaca();
+        Optional<Veiculo> veiculoAtualOpt = veiculoRepository.buscarPorPlaca(placaVeiculo);
+        if (veiculoAtualOpt.isPresent()) {
+            Veiculo veiculoAtual = veiculoAtualOpt.get();
+            veiculoAtual.setDisponivel(true);
+            veiculoRepository.salvar(veiculoAtual);
+        }
         
         // Atualizar aluguel
         aluguelRepository.salvar(aluguel);

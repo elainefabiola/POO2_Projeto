@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-public class Aluguel {
+public class Aluguel implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String id;
     private Cliente cliente;
     private Veiculo veiculo;

@@ -506,12 +506,8 @@ class MenuAluguel {
             try {
                 LocalDateTime dataInformada = LocalDateTime.parse(input, formatter);
                 
-                // Validação: data não pode ser no futuro
-                if (dataInformada.isAfter(LocalDateTime.now())) {
-                    System.out.println("❌ Erro: Data de devolução não pode ser no futuro!");
-                    System.out.println("Data atual: " + LocalDateTime.now().format(formatter));
-                    continue;
-                }
+                // Remover validação que impedia devoluções futuras
+                // Permitir devoluções futuras para casos de agendamento
                 
                 // Validação: data não pode ser anterior à data de retirada
                 if (dataRetirada != null && dataInformada.isBefore(dataRetirada)) {

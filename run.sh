@@ -29,15 +29,15 @@ echo "🔧 Compilando o projeto..."
 # Remove arquivos .class antigos
 find . -name "*.class" -delete
 
-# Compila todos os arquivos Java
-find src -name "*.java" -exec javac -d . {} +
+# Compila todos os arquivos Java (incluindo Main.java na raiz)
+javac -cp . -d . Main.java src/**/*.java
 
 # Verifica se a compilação foi bem-sucedida
 if [ $? -eq 0 ]; then
     echo "✅ Compilação concluída com sucesso!"
     echo "🚀 Executando o programa..."
     echo ""
-    java Main
+    java -cp . Main
 else
     echo "❌ Erro na compilação. Verifique o código fonte."
     exit 1
