@@ -8,7 +8,7 @@ import utils.ArquivoUtil;
 
 public class AluguelRepository {
     private List<Aluguel> aluguelList;
-    private static final String ARQUIVO_ALUGUEIS = "aluguels.dat";
+    private static final String ARQUIVO_ALUGUEIS = "alugueis.dat";
 
     public AluguelRepository(List<Aluguel> aluguelList) {
         this.aluguelList = aluguelList;
@@ -19,49 +19,49 @@ public class AluguelRepository {
     }
 
     public void carregarDeArquivo() {
-        this.aluguelList = ArquivoUtil.lerLista(ARQUIVO_ALUGUEIS);
+        List<Aluguel> carregados = ArquivoUtil.lerLista(ARQUIVO_ALUGUEIS);
+        if (carregados != null) {
+            aluguelList.clear();
+            aluguelList.addAll(carregados);
+        }
     }
 
     public void salvar(Aluguel aluguel) {
-        carregarDeArquivo();
-        if (buscarPorId(aluguel.getId()).isEmpty()) {
+        // Buscar se o aluguel já existe na lista atual
+        boolean existe = aluguelList.stream().anyMatch(a -> a.getId().equals(aluguel.getId()));
+        
+        if (!existe) {
             aluguelList.add(aluguel);
         } else {
             // Atualizar aluguel existente
             aluguelList.removeIf(a -> a.getId().equals(aluguel.getId()));
             aluguelList.add(aluguel);
         }
-        salvarEmArquivo();
     }
 
     public Optional<Aluguel> buscarPorId(String id) {
-        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst();
     }
 
     public List<Aluguel> listarTodos() {
-        carregarDeArquivo();
         return aluguelList;
     }
 
     public List<Aluguel> buscarAtivos() {
-        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(Aluguel::isAtivo)
                 .collect(Collectors.toList());
     }
 
     public List<Aluguel> buscarPorCliente(String documento) {
-        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getCliente().getDocumento().equals(documento))
                 .collect(Collectors.toList());
     }
 
     public List<Aluguel> buscarPorVeiculo(String placa) {
-        carregarDeArquivo();
         return aluguelList.stream()
                 .filter(a -> a.getVeiculo().getPlaca().equals(placa))
                 .collect(Collectors.toList());
