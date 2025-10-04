@@ -1,8 +1,11 @@
 package repositories;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import model.TipoVeiculo;
 import model.Veiculo;
 import utils.ArquivoUtil;
 
@@ -46,6 +49,42 @@ public class VeiculoRepository {
         return veiculoList;
     }
 
+    /**
+     * Lista veículos com paginação usando Stream.skip() e limit().
+     *
+     * @param pagina número da página (começa em 0)
+     * @param tamanhoPagina quantidade de itens por página
+     * @return lista de veículos da página solicitada
+     */
+    public List<Veiculo> listarComPaginacao(int pagina, int tamanhoPagina) {
+        return veiculoList.stream()
+                .sorted(Comparator.comparing(Veiculo::getNome))
+                .skip((long) pagina * tamanhoPagina)
+                .limit(tamanhoPagina)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Busca veículos com filtro personalizado usando Predicate.
+     */
+    public List<Veiculo> buscarComFiltro(Predicate<Veiculo> filtro) {
+        return veiculoList.stream()
+                .filter(filtro)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Busca veículos com filtro e paginação.
+     */
+    public List<Veiculo> buscarComFiltroPaginado(Predicate<Veiculo> filtro, int pagina, int tamanhoPagina) {
+        return veiculoList.stream()
+                .filter(filtro)
+                .sorted(Comparator.comparing(Veiculo::getNome))
+                .skip((long) pagina * tamanhoPagina)
+                .limit(tamanhoPagina)
+                .collect(Collectors.toList());
+    }
+
     public List<Veiculo> buscarPorNomeParcial(String termo) {
         if (termo == null) termo = "";
         final String t = termo.toLowerCase();
@@ -58,5 +97,35 @@ public class VeiculoRepository {
         return veiculoList.stream()
                 .filter(Veiculo::isDisponivel)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Busca veículos disponíveis com paginação.
+     */
+    public List<Veiculo> buscarDisponiveisComPaginacao(int pagina, int tamanhoPagina) {
+        return veiculoList.stream()
+                .filter(Veiculo::isDisponivel)
+                .sorted(Comparator.comparing(Veiculo::getNome))
+                .skip((long) pagina * tamanhoPagina)
+                .limit(tamanhoPagina)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Busca veículos por tipo.
+     */
+    public List<Veiculo> buscarPorTipo(TipoVeiculo tipo) {
+        return veiculoList.stream()
+                .filter(v -> v.getTipo() == tipo)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Conta o total de veículos que atendem a um filtro.
+     */
+    public long contarComFiltro(Predicate<Veiculo> filtro) {
+        return veiculoList.stream()
+                .filter(filtro)
+                .count();
     }
 }

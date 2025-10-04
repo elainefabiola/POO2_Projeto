@@ -1,11 +1,23 @@
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import model.*;
 import repositories.*;
 import services.*;
 import views.*;
 
+/**
+ * Main class - Refatorado para usar Streams, Interfaces Funcionais e Files.
+ *
+ * Refatorações aplicadas:
+ * - Streams com skip() e limit() para paginação
+ * - Predicate, Function, Consumer, Supplier em services
+ * - Interfaces funcionais personalizadas (ValidadorDocumento, CalculadoraDesconto, etc)
+ * - Files + Streams para relatórios
+ * - GeradorDados com Supplier para dados de teste
+ */
 public class Main {
     public static void main(String[] args) {
         // BASE DE DADOS
@@ -13,20 +25,23 @@ public class Main {
         List<Veiculo> veiculos = new ArrayList<>();
         List<Aluguel> alugueis = new ArrayList<>();
 
-        // REPOSITÓRIOS
+        // REPOSITÓRIOS (agora com suporte a Streams, Predicates e paginação)
         ClienteRepository clienteRepo = new ClienteRepository(clientes);
         VeiculoRepository veiculoRepo = new VeiculoRepository(veiculos);
         AluguelRepository aluguelRepo = new AluguelRepository(alugueis);
 
-        // Carregar dados persistidos
+        // Carregar dados persistidos usando InputStream/OutputStream
         clienteRepo.carregarDeArquivo();
         veiculoRepo.carregarDeArquivo();
         aluguelRepo.carregarDeArquivo();
 
-        // SERVICES (regras de negócio)
+        // SERVICES (regras de negócio com Streams e interfaces funcionais)
         ClienteService clienteService = new ClienteService(clienteRepo);
         VeiculoService veiculoService = new VeiculoService(veiculoRepo);
         AluguelService aluguelService = new AluguelService(aluguelRepo, clienteRepo, veiculoRepo);
+
+        // RELATÓRIOS (usando Files + Streams)
+        RelatorioService relatorioService = new RelatorioService(aluguelService, clienteService, veiculoService);
 
         // DADOS INICIAIS PARA TESTE - apenas se não existirem dados
         try {
@@ -157,6 +172,10 @@ public class Main {
                 System.out.println("   • Aluguéis totais: " + aluguelService.listarTodos().size());
                 System.out.println("   • Veículos disponíveis: " + veiculoService.listarDisponiveis().size());
                 System.out.println("\n✅ Sistema pronto para uso!");
+
+                // DEMONSTRAÇÃO: Exemplos de uso das novas funcionalidades com Streams
+                demonstrarNovasFuncionalidades(clienteService, veiculoService, aluguelService, relatorioService);
+
             } else {
                 System.out.println("Dados já existem - carregados da persistência");
                 System.out.println("- " + clienteService.listarTodos().size() + " clientes");
@@ -171,5 +190,84 @@ public class Main {
         // VIEW (interface do usuário)
         MenuPrincipal menuPrincipal = new MenuPrincipal(clienteService, veiculoService, aluguelService);
         menuPrincipal.start();
+    }
+
+    /**
+     * Demonstra as novas funcionalidades implementadas com Streams e Interfaces Funcionais.
+     */
+    private static void demonstrarNovasFuncionalidades(
+            ClienteService clienteService,
+            VeiculoService veiculoService,
+            AluguelService aluguelService,
+            RelatorioService relatorioService) {
+
+        System.out.println("\n" + "=".repeat(80));
+        System.out.println("DEMONSTRAÇÃO DAS REFATORAÇÕES COM STREAMS E INTERFACES FUNCIONAIS");
+        System.out.println("=".repeat(80));
+
+        // 1. PAGINAÇÃO usando skip() e limit()
+        System.out.println("\n📄 1. PAGINAÇÃO - Listando primeira página de clientes (5 por página):");
+        System.out.println("-".repeat(80));
+        List<Cliente> paginaClientes = clienteService.listarComPaginacao(0, 5);
+        Consumer<Cliente> impressorCliente = cliente -> {
+            String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
+            System.out.printf("  [%s] %s - %s%n", tipo, cliente.getNome(), cliente.getDocumento());
+        };
+        paginaClientes.forEach(impressorCliente);
+
+        // 2. FILTROS com Predicate
+        System.out.println("\n🔍 2. FILTROS COM PREDICATE - Listando apenas Pessoas Físicas:");
+        System.out.println("-".repeat(80));
+        List<Cliente> pessoasFisicas = clienteService.listarPessoasFisicas();
+        System.out.println("  Total de PF: " + pessoasFisicas.size());
+        pessoasFisicas.stream().limit(3).forEach(impressorCliente);
+
+        // 3. AGRUPAMENTO com Streams
+        System.out.println("\n📊 3. AGRUPAMENTO - Veículos disponíveis por tipo:");
+        System.out.println("-".repeat(80));
+        veiculoService.contarDisponiveisPorTipo().forEach((tipo, count) ->
+                System.out.printf("  %s: %d veículos disponíveis%n", tipo, count)
+        );
+
+        // 4. OPERAÇÕES COM FUNCTION
+        System.out.println("\n🚗 4. FUNCTION - TOP 3 Veículos Mais Alugados:");
+        System.out.println("-".repeat(80));
+        aluguelService.obterVeiculosMaisAlugados().stream()
+                .limit(3)
+                .forEach(entry ->
+                        System.out.printf("  %s: %d aluguéis%n", entry.getKey(), entry.getValue())
+                );
+
+        // 5. CÁLCULOS COM STREAMS
+        System.out.println("\n💰 5. STREAMS + REDUCE - Faturamento Total:");
+        System.out.println("-".repeat(80));
+        System.out.printf("  Faturamento total: R$ %.2f%n", aluguelService.calcularFaturamentoTotal());
+
+        // 6. RELATÓRIOS (Files + Streams)
+        System.out.println("\n📝 6. RELATÓRIOS (Files + Streams):");
+        System.out.println("-".repeat(80));
+        try {
+            relatorioService.gerarRelatorioVeiculosMaisAlugados();
+            relatorioService.gerarRelatorioClientesQueMaisAlugaram();
+            relatorioService.gerarRelatorioCompletodeAlugueis();
+
+            // Gerar relatório de faturamento dos últimos 30 dias
+            LocalDateTime hoje = LocalDateTime.now();
+            LocalDateTime trintaDiasAtras = hoje.minusDays(30);
+            relatorioService.gerarRelatorioFaturamentoPorPeriodo(trintaDiasAtras, hoje);
+
+            System.out.println("  📁 Todos os relatórios foram gerados no diretório 'relatorios/'");
+        } catch (IOException e) {
+            System.err.println("  ❌ Erro ao gerar relatórios: " + e.getMessage());
+        }
+
+        System.out.println("\n" + "=".repeat(80));
+        System.out.println("✅ Demonstração concluída! O sistema está usando:");
+        System.out.println("   • Streams com skip() e limit() para paginação");
+        System.out.println("   • Predicate, Function, Consumer, Supplier");
+        System.out.println("   • Interfaces funcionais personalizadas");
+        System.out.println("   • Files + Streams para relatórios");
+        System.out.println("   • Comparator com lambdas para ordenação");
+        System.out.println("=".repeat(80) + "\n");
     }
 }
