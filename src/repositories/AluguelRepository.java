@@ -47,6 +47,22 @@ public class AluguelRepository {
                 .findFirst();
     }
 
+    /**
+     * Correção do bug: "Aluguel não encontrado" ao gerar recibos.
+     * - Adicionado método buscarPorPrefixo(String prefixo)
+     * - Permite encontrar aluguéis mesmo com ID truncado no menu
+     */
+
+    public Optional<Aluguel> buscarPorPrefixo(String prefixo) {
+        if (prefixo == null || prefixo.isBlank()) {
+            return Optional.empty();
+        }
+
+        return aluguelList.stream()
+                .filter(a -> a.getId() != null && a.getId().startsWith(prefixo))
+                .findFirst();
+    }
+
     public List<Aluguel> listarTodos() {
         return aluguelList;
     }

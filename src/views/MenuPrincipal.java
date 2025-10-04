@@ -657,25 +657,38 @@ class MenuRefatoracoes {
         System.out.println("1. PAGINAÇÃO COM STREAM.SKIP() E LIMIT()");
         System.out.println("=".repeat(70));
 
-        System.out.print("Tamanho da página (ex: 5): ");
-        scanner.nextLine(); // limpar buffer
-        int tamanhoPagina = Integer.parseInt(scanner.nextLine());
+        scanner.nextLine(); // limpar buffer antes da leitura
 
-        System.out.print("Número da página (começando em 0): ");
-        int numeroPagina = Integer.parseInt(scanner.nextLine());
+        int tamanhoPagina;
+        while (true) {
+            try {
+                System.out.print("Tamanho da página (ex: 5): ");
+                tamanhoPagina = Integer.parseInt(scanner.nextLine().trim());
 
-        System.out.println("\nClientes - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
-        System.out.println("-".repeat(70));
+                if (tamanhoPagina <= 0) {
+                    System.out.println("O tamanho da página deve ser um número positivo.\n");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido! Digite um número inteiro.\n");
+            }
+        }
 
-        List<Cliente> paginaClientes = clienteService.listarComPaginacao(numeroPagina, tamanhoPagina);
+        int numeroPagina;
+        while (true) {
+            try {
+                System.out.print("Número da página (começando em 0): ");
+                numeroPagina = Integer.parseInt(scanner.nextLine().trim());
 
-        if (paginaClientes.isEmpty()) {
-            System.out.println("Nenhum cliente nesta página.");
-        } else {
-            paginaClientes.forEach(cliente -> {
-                String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
-                System.out.printf("  [%s] %s - %s%n", tipo, cliente.getNome(), cliente.getDocumento());
-            });
+                if (numeroPagina < 0) {
+                    System.out.println("O número da página não pode ser negativo.\n");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido! Digite um número inteiro.\n");
+            }
         }
 
         System.out.println("\nVeículos - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
@@ -1018,12 +1031,21 @@ class MenuRelatorios {
         }
 
         scanner.nextLine();
-        System.out.print("ID do aluguel: ");
-        String id = scanner.nextLine();
+        System.out.print("ID do aluguel (prefixo exibido): ");
+        String prefixo = scanner.nextLine();
 
         try {
-            relatorioService.gerarReciboAluguel(id);
-            System.out.println("\nUsa: Files + BufferedWriter");
+            Optional<Aluguel> aluguelOpt = aluguelService.buscarPorPrefixo(prefixo);
+
+            if (aluguelOpt.isEmpty()) {
+                System.out.println("Erro: Aluguel não encontrado!");
+                return;
+            }
+
+            Aluguel aluguel = aluguelOpt.get();
+            relatorioService.gerarReciboAluguel(aluguel.getId());
+            System.out.println("\n✅ Recibo gerado com sucesso (Files + BufferedWriter)");
+
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
@@ -1047,12 +1069,21 @@ class MenuRelatorios {
         }
 
         scanner.nextLine();
-        System.out.print("ID do aluguel: ");
-        String id = scanner.nextLine();
+        System.out.print("ID do aluguel (prefixo exibido): ");
+        String prefixo = scanner.nextLine();
 
         try {
-            relatorioService.gerarReciboDevolucao(id);
-            System.out.println("\nUsa: Files + BufferedWriter + cálculo de valores");
+            Optional<Aluguel> aluguelOpt = aluguelService.buscarPorPrefixo(prefixo);
+
+            if (aluguelOpt.isEmpty()) {
+                System.out.println("Erro: Aluguel não encontrado!");
+                return;
+            }
+
+            Aluguel aluguel = aluguelOpt.get();
+            relatorioService.gerarReciboDevolucao(aluguel.getId());
+            System.out.println("\n✅ Recibo de devolução gerado com sucesso (Files + BufferedWriter)");
+
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }

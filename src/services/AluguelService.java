@@ -230,5 +230,12 @@ public class AluguelService {
                 .sorted(Comparator.comparing(Aluguel::getDataHoraRetirada).reversed())
                 .toList();
     }
+    /**
+     * Busca um aluguel pelo prefixo do ID (primeiros caracteres do UUID).
+     * Permite que o usuário digite apenas parte do ID exibido no menu.
+     */
+    public Optional<Aluguel> buscarPorPrefixo(String prefixo) {
+        return aluguelRepository.buscarPorPrefixo(prefixo);
+    }
 }
 

@@ -1,1 +1,18 @@
+# Arquivos compilados
 *.class
+
+# IntelliJ IDEA (configurações locais)
+.idea/
+*.iml
+
+# Pastas de saída e build
+out/
+src/out/
+
+# Relatórios e arquivos temporários gerados pela aplicação
+relatorios/
+*.dat
+
+# Sistema operacional (Windows/macOS)
+Thumbs.db
+.DS_Store
