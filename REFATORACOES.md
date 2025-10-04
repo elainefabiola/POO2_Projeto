@@ -387,5 +387,3 @@ cat relatorios/faturamento_*.txt
 
 ---
 
-**Refatorado por:** Claude Code
-**Status:** ✅ **Concluído**
