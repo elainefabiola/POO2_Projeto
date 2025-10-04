@@ -52,8 +52,8 @@ public class MenuPrincipal {
         System.out.println("2 - Gestão de Veículos");
         System.out.println("3 - Gestão de Aluguéis");
         System.out.println("-".repeat(60));
-        System.out.println("4 - 🔍 DEMONSTRAÇÃO DAS REFATORAÇÕES (Streams, Predicates...)");
-        System.out.println("5 - 📊 RELATÓRIOS (Files + Streams)");
+        System.out.println("4 - DEMONSTRAÇÃO DAS REFATORAÇÕES (Streams, Predicates...)");
+        System.out.println("5 - RELATÓRIOS (Files + Streams)");
         System.out.println("-".repeat(60));
         System.out.println("0 - Sair");
         System.out.println("=".repeat(60));
@@ -367,7 +367,6 @@ class MenuAluguel {
         scanner.nextLine(); // limpar buffer
         
         try {
-            // Mostrar clientes disponíveis
             System.out.println("\n--- CLIENTES CADASTRADOS ---");
             List<Cliente> clientes = clienteService.listarTodos();
             if (clientes.isEmpty()) {
@@ -385,7 +384,6 @@ class MenuAluguel {
             System.out.print("Documento do cliente: ");
             String documento = scanner.nextLine();
             
-            // Mostrar veículos disponíveis
             System.out.println("\n--- VEÍCULOS DISPONÍVEIS ---");
             List<Veiculo> disponiveis = veiculoService.listarDisponiveis();
             if (disponiveis.isEmpty()) {
@@ -426,7 +424,6 @@ class MenuAluguel {
     private void devolverVeiculo() {
         System.out.println("\n=== DEVOLVER VEÍCULO ===");
         
-        // Listar aluguéis ativos
         List<Aluguel> ativos = aluguelService.listarAtivos();
         if (ativos.isEmpty()) {
             System.out.println("Nenhum aluguel ativo!");
@@ -448,7 +445,6 @@ class MenuAluguel {
         System.out.print("Local de devolução: ");
         String localDevolucao = scanner.nextLine();
         
-        // Buscar o aluguel para verificar data de retirada
         Optional<Aluguel> aluguelParaValidacao = aluguelService.listarAtivos().stream()
                 .filter(a -> a.getId().equals(aluguelId))
                 .findFirst();
@@ -458,13 +454,11 @@ class MenuAluguel {
             dataRetirada = aluguelParaValidacao.get().getDataHoraRetirada();
         }
         
-        // Input opcional de data/hora
         LocalDateTime dataDevolucao = lerDataHoraDevolucao(dataRetirada);
         
         try {
             aluguelService.devolver(aluguelId, dataDevolucao, localDevolucao);
             
-            // Buscar o aluguel finalizado para exibir detalhes
             Optional<Aluguel> aluguelOpt = aluguelService.listarTodos().stream()
                     .filter(a -> a.getId().equals(aluguelId))
                     .findFirst();
@@ -501,38 +495,32 @@ class MenuAluguel {
             
             String input = scanner.nextLine().trim();
             
-            // Se usuário não digitou nada, usa data/hora atual
             if (input.isEmpty()) {
                 LocalDateTime agora = LocalDateTime.now();
                 System.out.println("Usando data/hora atual: " + agora.format(formatter));
                 return agora;
             }
             
-            // Tentar fazer parse da data/hora informada
             try {
                 LocalDateTime dataInformada = LocalDateTime.parse(input, formatter);
                 
-                // Remover validação que impedia devoluções futuras
-                // Permitir devoluções futuras para casos de agendamento
                 
-                // Validação: data não pode ser anterior à data de retirada
                 if (dataRetirada != null && dataInformada.isBefore(dataRetirada)) {
-                    System.out.println("❌ Erro: Data de devolução não pode ser anterior à data de retirada!");
+                    System.out.println("Erro: Data de devolução não pode ser anterior à data de retirada!");
                     System.out.println("Data de retirada: " + dataRetirada.format(formatter));
                     continue;
                 }
                 
-                // Validação: data não pode ser anterior a 1900 (data mínima razoável)
                 if (dataInformada.getYear() < 1900) {
-                    System.out.println("❌ Erro: Data inválida. Use um ano a partir de 1900.");
+                    System.out.println("Erro: Data inválida. Use um ano a partir de 1900.");
                     continue;
                 }
                 
-                System.out.println("✅ Data/hora aceita: " + dataInformada.format(formatter));
+                System.out.println("Data/hora aceita: " + dataInformada.format(formatter));
                 return dataInformada;
                 
             } catch (DateTimeParseException e) {
-                System.out.println("❌ Formato inválido!");
+                System.out.println("Formato inválido!");
                 System.out.println("Use o formato: dd/MM/yyyy HH:mm");
                 System.out.println("Exemplos válidos:");
                 System.out.println("  • 25/12/2024 14:30");
@@ -542,7 +530,6 @@ class MenuAluguel {
                 
                 String resposta = scanner.nextLine().trim().toLowerCase();
                 if (!resposta.equals("s") && !resposta.equals("sim") && !resposta.isEmpty()) {
-                    // Se usuário não quer tentar novamente, usa data atual
                     LocalDateTime agora = LocalDateTime.now();
                     System.out.println("Usando data/hora atual: " + agora.format(formatter));
                     return agora;
@@ -650,16 +637,16 @@ class MenuRefatoracoes {
 
     private void exibirMenu() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("    🔍 DEMONSTRAÇÃO DAS REFATORAÇÕES - CHECKLIST REFACT.MD");
+        System.out.println("    DEMONSTRAÇÃO DAS REFATORAÇÕES - CHECKLIST REFACT.MD");
         System.out.println("=".repeat(70));
-        System.out.println("1 - ✅ Paginação (Stream.skip() + limit())");
-        System.out.println("2 - ✅ Filtros com Predicate");
-        System.out.println("3 - ✅ Agrupamento com Streams (groupingBy)");
-        System.out.println("4 - ✅ Rankings com Function (veículos/clientes mais ativos)");
-        System.out.println("5 - ✅ Cálculos com Reduce (faturamento total)");
-        System.out.println("6 - ✅ Consumer para impressão formatada");
-        System.out.println("7 - ✅ Comparator com Lambda (ordenação)");
-        System.out.println("8 - 🎯 Executar TODAS as demonstrações");
+        System.out.println("1 - Paginação (Stream.skip() + limit())");
+        System.out.println("2 - Filtros com Predicate");
+        System.out.println("3 - Agrupamento com Streams (groupingBy)");
+        System.out.println("4 - Rankings com Function (veículos/clientes mais ativos)");
+        System.out.println("5 - Cálculos com Reduce (faturamento total)");
+        System.out.println("6 - Consumer para impressão formatada");
+        System.out.println("7 - Comparator com Lambda (ordenação)");
+        System.out.println("8 - Executar TODAS as demonstrações");
         System.out.println("0 - Voltar");
         System.out.println("=".repeat(70));
         System.out.print("Escolha: ");
@@ -667,7 +654,7 @@ class MenuRefatoracoes {
 
     private void demonstrarPaginacao() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 1. PAGINAÇÃO COM STREAM.SKIP() E LIMIT()");
+        System.out.println("1. PAGINAÇÃO COM STREAM.SKIP() E LIMIT()");
         System.out.println("=".repeat(70));
 
         System.out.print("Tamanho da página (ex: 5): ");
@@ -677,7 +664,7 @@ class MenuRefatoracoes {
         System.out.print("Número da página (começando em 0): ");
         int numeroPagina = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("\n📄 Clientes - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
+        System.out.println("\nClientes - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
         System.out.println("-".repeat(70));
 
         List<Cliente> paginaClientes = clienteService.listarComPaginacao(numeroPagina, tamanhoPagina);
@@ -691,7 +678,7 @@ class MenuRefatoracoes {
             });
         }
 
-        System.out.println("\n📄 Veículos - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
+        System.out.println("\nVeículos - Página " + numeroPagina + " (tamanho: " + tamanhoPagina + "):");
         System.out.println("-".repeat(70));
 
         List<Veiculo> paginaVeiculos = veiculoService.listarComPaginacao(numeroPagina, tamanhoPagina);
@@ -706,17 +693,17 @@ class MenuRefatoracoes {
             );
         }
 
-        System.out.println("\n✅ Código usado: clienteService.listarComPaginacao(pagina, tamanho)");
+        System.out.println("\nCódigo usado: clienteService.listarComPaginacao(pagina, tamanho)");
         System.out.println("   Implementação: .skip(pagina * tamanho).limit(tamanho)");
         aguardarEnter();
     }
 
     private void demonstrarFiltrosComPredicate() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 2. FILTROS COM PREDICATE<T>");
+        System.out.println("2. FILTROS COM PREDICATE<T>");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n🔍 Filtro 1: Listar apenas Pessoas Físicas");
+        System.out.println("\nFiltro 1: Listar apenas Pessoas Físicas");
         System.out.println("-".repeat(70));
         List<Cliente> pessoasFisicas = clienteService.listarPessoasFisicas();
         System.out.println("Total de PF: " + pessoasFisicas.size());
@@ -724,7 +711,7 @@ class MenuRefatoracoes {
             System.out.printf("  [PF] %s - %s%n", pf.getNome(), pf.getDocumento())
         );
 
-        System.out.println("\n🔍 Filtro 2: Listar apenas Pessoas Jurídicas");
+        System.out.println("\nFiltro 2: Listar apenas Pessoas Jurídicas");
         System.out.println("-".repeat(70));
         List<Cliente> pessoasJuridicas = clienteService.listarPessoasJuridicas();
         System.out.println("Total de PJ: " + pessoasJuridicas.size());
@@ -732,7 +719,7 @@ class MenuRefatoracoes {
             System.out.printf("  [PJ] %s - %s%n", pj.getNome(), pj.getDocumento())
         );
 
-        System.out.println("\n🔍 Filtro 3: Veículos disponíveis");
+        System.out.println("\nFiltro 3: Veículos disponíveis");
         System.out.println("-".repeat(70));
         List<Veiculo> disponiveis = veiculoService.listarDisponiveis();
         System.out.println("Total de veículos disponíveis: " + disponiveis.size());
@@ -740,7 +727,7 @@ class MenuRefatoracoes {
             System.out.printf("  %s - %s [%s]%n", v.getPlaca(), v.getNome(), v.getTipo())
         );
 
-        System.out.println("\n✅ Código usado:");
+        System.out.println("\nCódigo usado:");
         System.out.println("   Predicate<Cliente> ehPessoaFisica = c -> c instanceof PessoaFisica;");
         System.out.println("   clienteService.buscarComFiltro(ehPessoaFisica)");
         aguardarEnter();
@@ -748,28 +735,28 @@ class MenuRefatoracoes {
 
     private void demonstrarAgrupamentoComStreams() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 3. AGRUPAMENTO COM STREAMS (GROUPINGBY)");
+        System.out.println("3. AGRUPAMENTO COM STREAMS (GROUPINGBY)");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n📊 Veículos agrupados por tipo:");
+        System.out.println("\nVeículos agrupados por tipo:");
         System.out.println("-".repeat(70));
         veiculoService.agruparPorTipo().forEach((tipo, lista) ->
             System.out.printf("  %s: %d veículos%n", tipo, lista.size())
         );
 
-        System.out.println("\n📊 Veículos disponíveis por tipo:");
+        System.out.println("\nVeículos disponíveis por tipo:");
         System.out.println("-".repeat(70));
         veiculoService.contarDisponiveisPorTipo().forEach((tipo, count) ->
             System.out.printf("  %s: %d disponíveis%n", tipo, count)
         );
 
-        System.out.println("\n📊 Aluguéis agrupados por tipo de veículo:");
+        System.out.println("\nAluguéis agrupados por tipo de veículo:");
         System.out.println("-".repeat(70));
         aluguelService.agruparPorTipoVeiculo().forEach((tipo, lista) ->
             System.out.printf("  %s: %d aluguéis%n", tipo, lista.size())
         );
 
-        System.out.println("\n✅ Código usado:");
+        System.out.println("\nCódigo usado:");
         System.out.println("   .collect(Collectors.groupingBy(Veiculo::getTipo))");
         System.out.println("   .collect(Collectors.groupingBy(..., Collectors.counting()))");
         aguardarEnter();
@@ -777,10 +764,10 @@ class MenuRefatoracoes {
 
     private void demonstrarRankings() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 4. RANKINGS COM FUNCTION<T,R> - PIPELINE COMPLEXO");
+        System.out.println("4. RANKINGS COM FUNCTION<T,R> - PIPELINE COMPLEXO");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n🏆 TOP 5 Veículos Mais Alugados:");
+        System.out.println("\nTOP 5 Veículos Mais Alugados:");
         System.out.println("-".repeat(70));
         aluguelService.obterVeiculosMaisAlugados().stream()
             .limit(5)
@@ -788,7 +775,7 @@ class MenuRefatoracoes {
                 System.out.printf("  %s: %d aluguéis%n", entry.getKey(), entry.getValue())
             );
 
-        System.out.println("\n🏆 TOP 5 Clientes que Mais Alugaram:");
+        System.out.println("\nTOP 5 Clientes que Mais Alugaram:");
         System.out.println("-".repeat(70));
         aluguelService.obterClientesQueMaisAlugaram().stream()
             .limit(5)
@@ -805,21 +792,21 @@ class MenuRefatoracoes {
 
     private void demonstrarCalculosComReduce() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 5. CÁLCULOS COM STREAMS + REDUCE");
+        System.out.println("5. CÁLCULOS COM STREAMS + REDUCE");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n💰 Faturamento Total (usando reduce):");
+        System.out.println("\nFaturamento Total (usando reduce):");
         System.out.println("-".repeat(70));
         java.math.BigDecimal faturamentoTotal = aluguelService.calcularFaturamentoTotal();
         System.out.printf("  Faturamento total: R$ %.2f%n", faturamentoTotal);
 
-        System.out.println("\n💰 Faturamento por Tipo de Veículo:");
+        System.out.println("\nFaturamento por Tipo de Veículo:");
         System.out.println("-".repeat(70));
         aluguelService.calcularFaturamentoPorTipo().forEach((tipo, valor) ->
             System.out.printf("  %s: R$ %.2f%n", tipo, valor)
         );
 
-        System.out.println("\n✅ Código usado:");
+        System.out.println("\nCódigo usado:");
         System.out.println("   .map(Aluguel::getValorTotal)");
         System.out.println("   .reduce(BigDecimal.ZERO, BigDecimal::add)");
         aguardarEnter();
@@ -827,10 +814,10 @@ class MenuRefatoracoes {
 
     private void demonstrarConsumer() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 6. CONSUMER<T> PARA IMPRESSÃO FORMATADA");
+        System.out.println("6. CONSUMER<T> PARA IMPRESSÃO FORMATADA");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n📋 Clientes (usando Consumer):");
+        System.out.println("\nClientes (usando Consumer):");
         System.out.println("-".repeat(70));
         clienteService.listarTodos().stream().limit(5).forEach(cliente -> {
             String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
@@ -845,7 +832,7 @@ class MenuRefatoracoes {
                 veiculo.getPlaca(), veiculo.getNome(), veiculo.getTipo(), status);
         });
 
-        System.out.println("\n✅ Código usado:");
+        System.out.println("\nCódigo usado:");
         System.out.println("   Consumer<Cliente> impressora = cliente -> {...};");
         System.out.println("   clientes.forEach(impressora);");
         aguardarEnter();
@@ -853,10 +840,10 @@ class MenuRefatoracoes {
 
     private void demonstrarComparator() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ 7. COMPARATOR COM LAMBDA (ORDENAÇÃO)");
+        System.out.println("7. COMPARATOR COM LAMBDA (ORDENAÇÃO)");
         System.out.println("=".repeat(70));
 
-        System.out.println("\n📋 Clientes ordenados por nome (A-Z):");
+        System.out.println("\nClientes ordenados por nome (A-Z):");
         System.out.println("-".repeat(70));
         clienteService.listarOrdenadosPorNome().stream().limit(8).forEach(cliente ->
             System.out.printf("  %s%n", cliente.getNome())
@@ -878,7 +865,7 @@ class MenuRefatoracoes {
                 aluguel.getVeiculo().getNome())
         );
 
-        System.out.println("\n✅ Código usado:");
+        System.out.println("\nCódigo usado:");
         System.out.println("   .sorted(Comparator.comparing(Cliente::getNome))");
         System.out.println("   .sorted(Comparator.comparing(Aluguel::getData).reversed())");
         aguardarEnter();
@@ -886,7 +873,7 @@ class MenuRefatoracoes {
 
     private void demonstrarTodas() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("🎯 EXECUTANDO TODAS AS DEMONSTRAÇÕES");
+        System.out.println("EXECUTANDO TODAS AS DEMONSTRAÇÕES");
         System.out.println("=".repeat(70));
 
         demonstrarPaginacao();
@@ -898,7 +885,7 @@ class MenuRefatoracoes {
         demonstrarComparator();
 
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("✅ TODAS AS DEMONSTRAÇÕES CONCLUÍDAS!");
+        System.out.println("TODAS AS DEMONSTRAÇÕES CONCLUÍDAS!");
         System.out.println("=".repeat(70));
     }
 
@@ -957,22 +944,22 @@ class MenuRelatorios {
 
     private void exibirMenu() {
         System.out.println("\n" + "=".repeat(70));
-        System.out.println("    📊 RELATÓRIOS (FILES + STREAMS) - CHECKLIST REFACT.MD");
+        System.out.println("    RELATÓRIOS (FILES + STREAMS) - CHECKLIST REFACT.MD");
         System.out.println("=".repeat(70));
-        System.out.println("1 - ✅ Faturamento Total por Período");
-        System.out.println("2 - ✅ Veículos Mais Alugados");
-        System.out.println("3 - ✅ Clientes que Mais Alugaram");
-        System.out.println("4 - ✅ Recibo de Aluguel");
-        System.out.println("5 - ✅ Recibo de Devolução");
-        System.out.println("6 - ✅ Relatório Completo de Aluguéis");
-        System.out.println("7 - 🎯 Gerar TODOS os Relatórios");
+        System.out.println("1 - Faturamento Total por Período");
+        System.out.println("2 - Veículos Mais Alugados");
+        System.out.println("3 - Clientes que Mais Alugaram");
+        System.out.println("4 - Recibo de Aluguel");
+        System.out.println("5 - Recibo de Devolução");
+        System.out.println("6 - Relatório Completo de Aluguéis");
+        System.out.println("7 - Gerar TODOS os Relatórios");
         System.out.println("0 - Voltar");
         System.out.println("=".repeat(70));
         System.out.print("Escolha: ");
     }
 
     private void gerarRelatorioFaturamento() {
-        System.out.println("\n📊 RELATÓRIO DE FATURAMENTO POR PERÍODO");
+        System.out.println("\nRELATÓRIO DE FATURAMENTO POR PERÍODO");
         System.out.println("-".repeat(70));
 
         try {
@@ -982,7 +969,7 @@ class MenuRelatorios {
             System.out.println("Gerando relatório dos últimos 30 dias...");
             relatorioService.gerarRelatorioFaturamentoPorPeriodo(trintaDiasAtras, hoje);
 
-            System.out.println("\n✅ Usa: Files.newBufferedWriter() + Streams");
+            System.out.println("\nUsa: Files.newBufferedWriter() + Streams");
             System.out.println("   Pipeline: filter + map + reduce + groupingBy");
 
         } catch (Exception e) {
@@ -996,7 +983,7 @@ class MenuRelatorios {
 
         try {
             relatorioService.gerarRelatorioVeiculosMaisAlugados();
-            System.out.println("\n✅ Usa: Files + Streams + groupingBy + counting");
+            System.out.println("\nUsa: Files + Streams + groupingBy + counting");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
@@ -1008,14 +995,14 @@ class MenuRelatorios {
 
         try {
             relatorioService.gerarRelatorioClientesQueMaisAlugaram();
-            System.out.println("\n✅ Usa: Files + Streams + groupingBy + counting");
+            System.out.println("\nUsa: Files + Streams + groupingBy + counting");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     private void gerarReciboAluguel() {
-        System.out.println("\n📄 GERAR RECIBO DE ALUGUEL");
+        System.out.println("\nGERAR RECIBO DE ALUGUEL");
         System.out.println("-".repeat(70));
 
         List<Aluguel> alugueis = aluguelService.listarTodos();
@@ -1036,14 +1023,14 @@ class MenuRelatorios {
 
         try {
             relatorioService.gerarReciboAluguel(id);
-            System.out.println("\n✅ Usa: Files + BufferedWriter");
+            System.out.println("\nUsa: Files + BufferedWriter");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     private void gerarReciboDevolucao() {
-        System.out.println("\n📄 GERAR RECIBO DE DEVOLUÇÃO");
+        System.out.println("\nGERAR RECIBO DE DEVOLUÇÃO");
         System.out.println("-".repeat(70));
 
         List<Aluguel> finalizados = aluguelService.listarFinalizados();
@@ -1065,26 +1052,26 @@ class MenuRelatorios {
 
         try {
             relatorioService.gerarReciboDevolucao(id);
-            System.out.println("\n✅ Usa: Files + BufferedWriter + cálculo de valores");
+            System.out.println("\nUsa: Files + BufferedWriter + cálculo de valores");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     private void gerarRelatorioCompleto() {
-        System.out.println("\n📋 RELATÓRIO COMPLETO DE ALUGUÉIS");
+        System.out.println("\nRELATÓRIO COMPLETO DE ALUGUÉIS");
         System.out.println("-".repeat(70));
 
         try {
             relatorioService.gerarRelatorioCompletodeAlugueis();
-            System.out.println("\n✅ Usa: Files + Streams + sorted + filter");
+            System.out.println("\nUsa: Files + Streams + sorted + filter");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     private void gerarTodosRelatorios() {
-        System.out.println("\n🎯 GERANDO TODOS OS RELATÓRIOS...");
+        System.out.println("\nGERANDO TODOS OS RELATÓRIOS...");
         System.out.println("=".repeat(70));
 
         try {
@@ -1096,7 +1083,7 @@ class MenuRelatorios {
             relatorioService.gerarRelatorioClientesQueMaisAlugaram();
             relatorioService.gerarRelatorioCompletodeAlugueis();
 
-            System.out.println("\n✅ TODOS OS RELATÓRIOS GERADOS COM SUCESSO!");
+            System.out.println("\nTODOS OS RELATÓRIOS GERADOS COM SUCESSO!");
             System.out.println("   Verifique o diretório 'relatorios/'");
 
         } catch (Exception e) {

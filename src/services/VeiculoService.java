@@ -15,7 +15,6 @@ import repositories.VeiculoRepository;
 public class VeiculoService {
     private final VeiculoRepository repository;
 
-    // Predicates para validação
     private static final Predicate<String> PLACA_VALIDA = placa ->
             placa != null &&
             (placa.matches("[A-Z]{3}-\\d{4}") || placa.matches("[A-Z]{3}\\d[A-Z]\\d{2}"));
@@ -26,7 +25,6 @@ public class VeiculoService {
             veiculo.getNome() != null && !veiculo.getNome().trim().isEmpty() &&
             veiculo.getTipo() != null;
 
-    // Function para transformar veículo em descrição
     private static final Function<Veiculo, String> VEICULO_PARA_DESCRICAO = veiculo ->
             String.format("%s - %s (%s) - %s",
                     veiculo.getPlaca(),
@@ -39,12 +37,10 @@ public class VeiculoService {
     }
 
     public void cadastrarVeiculo(Veiculo veiculo) {
-        // Validação usando Predicate
         if (!VEICULO_VALIDO.test(veiculo)) {
             throw new IllegalArgumentException("Dados do veículo são obrigatórios");
         }
 
-        // Validação de placa usando Predicate
         if (!PLACA_VALIDA.test(veiculo.getPlaca())) {
             throw new IllegalArgumentException("Placa inválida. Use o formato ABC-1234 ou ABC1D23.");
         }

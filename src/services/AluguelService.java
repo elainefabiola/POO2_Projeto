@@ -24,11 +24,9 @@ public class AluguelService {
     private final ClienteRepository clienteRepository;
     private final VeiculoRepository veiculoRepository;
 
-    // Predicates para filtros
     private static final Predicate<Aluguel> ALUGUEL_ATIVO = Aluguel::isAtivo;
     private static final Predicate<Aluguel> ALUGUEL_FINALIZADO = aluguel -> !aluguel.isAtivo();
 
-    // Function para transformar aluguel em descrição
     private static final Function<Aluguel, String> ALUGUEL_PARA_DESCRICAO = aluguel ->
             String.format("ID: %s | Cliente: %s | Veículo: %s | Status: %s",
                     aluguel.getId().substring(0, 8),
@@ -45,7 +43,6 @@ public class AluguelService {
     }
 
     public Aluguel alugar(String documento, String placa, LocalDateTime retirada, String localRetirada) {
-        // Buscar cliente usando Streams
         Optional<Cliente> clienteOpt = clienteRepository.listarTodos().stream()
                 .filter(c -> c.getDocumento().equals(documento))
                 .findFirst();
@@ -64,11 +61,9 @@ public class AluguelService {
             throw new IllegalArgumentException("Veículo não está disponível");
         }
 
-        // Criar aluguel
         String id = UUID.randomUUID().toString();
         Aluguel aluguel = new Aluguel(id, clienteOpt.get(), veiculo, retirada, localRetirada);
 
-        // Marcar veículo como indisponível
         veiculo.setDisponivel(false);
         veiculoRepository.salvar(veiculo);
 
@@ -90,7 +85,6 @@ public class AluguelService {
             throw new IllegalArgumentException("Aluguel já finalizado");
         }
 
-        // Finalizar aluguel
         aluguel.finalizar(devolucao, localDevolucao);
 
         // Buscar o veículo atual na lista em memória para manter referência

@@ -6,11 +6,6 @@ public abstract class Cliente implements Serializable {
     private String documento;
     private String nome;
 
-//    public Cliente(String documento, String nome) {
-//        this.documento = documento;
-//        this.nome = nome;
-//    }
-
     public void setDocumento(String documento) {
         this.documento = documento;
     }

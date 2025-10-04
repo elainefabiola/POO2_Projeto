@@ -16,7 +16,6 @@ import model.*;
 public class GeradorDadosTeste {
     private static final Random random = new Random();
 
-    // Arrays de dados para gerar nomes e modelos aleatórios
     private static final String[] NOMES_PF = {
         "Ana Silva", "João Santos", "Maria Oliveira", "Carlos Ferreira",
         "Fernanda Costa", "Roberto Lima", "Juliana Souza", "Pedro Alves",
@@ -51,7 +50,6 @@ public class GeradorDadosTeste {
         "Filial Leste", "Filial Oeste", "Aeroporto Internacional"
     };
 
-    // Suppliers usando interface funcional GeradorDados
 
     /**
      * Supplier para gerar CPF válido (apenas formato, não validação de dígitos).
@@ -159,7 +157,6 @@ public class GeradorDadosTeste {
         return LOCAIS[random.nextInt(LOCAIS.length)];
     };
 
-    // Métodos utilitários para gerar listas usando Streams
 
     /**
      * Gera uma lista de clientes usando Supplier e Streams.

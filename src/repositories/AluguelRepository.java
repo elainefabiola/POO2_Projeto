@@ -31,13 +31,11 @@ public class AluguelRepository {
     }
 
     public void salvar(Aluguel aluguel) {
-        // Buscar se o aluguel já existe na lista atual
         boolean existe = aluguelList.stream().anyMatch(a -> a.getId().equals(aluguel.getId()));
 
         if (!existe) {
             aluguelList.add(aluguel);
         } else {
-            // Atualizar aluguel existente
             aluguelList.removeIf(a -> a.getId().equals(aluguel.getId()));
             aluguelList.add(aluguel);
         }

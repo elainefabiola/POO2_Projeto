@@ -144,7 +144,7 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Relatório de faturamento gerado: " + nomeArquivo);
+        System.out.println("Relatório de faturamento gerado: " + nomeArquivo);
     }
 
     /**
@@ -204,7 +204,7 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Relatório de veículos mais alugados gerado: " + nomeArquivo);
+        System.out.println("Relatório de veículos mais alugados gerado: " + nomeArquivo);
     }
 
     /**
@@ -264,7 +264,7 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Relatório de clientes que mais alugaram gerado: " + nomeArquivo);
+        System.out.println("Relatório de clientes que mais alugaram gerado: " + nomeArquivo);
     }
 
     /**
@@ -341,7 +341,7 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Recibo de aluguel gerado: " + nomeArquivo);
+        System.out.println("Recibo de aluguel gerado: " + nomeArquivo);
     }
 
     /**
@@ -432,7 +432,7 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Recibo de devolução gerado: " + nomeArquivo);
+        System.out.println("Recibo de devolução gerado: " + nomeArquivo);
     }
 
     /**
@@ -514,6 +514,6 @@ public class RelatorioService {
             writer.newLine();
         }
 
-        System.out.println("✅ Relatório completo de aluguéis gerado: " + nomeArquivo);
+        System.out.println("Relatório completo de aluguéis gerado: " + nomeArquivo);
     }
 }

@@ -13,7 +13,6 @@ import repositories.ClienteRepository;
 public class ClienteService {
     private final ClienteRepository repository;
 
-    // Predicates para validação
     private static final Predicate<Cliente> CLIENTE_VALIDO = cliente ->
             cliente != null &&
             cliente.getNome() != null && !cliente.getNome().trim().isEmpty() &&
@@ -22,7 +21,6 @@ public class ClienteService {
     private static final Predicate<String> NOME_VALIDO = nome ->
             nome != null && !nome.trim().isEmpty();
 
-    // Validadores de documento usando interface funcional personalizada
     private static final ValidadorDocumento VALIDADOR_CPF = ValidadorDocumento.cpf();
     private static final ValidadorDocumento VALIDADOR_CNPJ = ValidadorDocumento.cnpj();
 
@@ -31,14 +29,12 @@ public class ClienteService {
     }
 
     public void cadastrarCliente(Cliente cliente) {
-        // Validação usando Predicate
         if (!CLIENTE_VALIDO.test(cliente)) {
             throw new IllegalArgumentException("Dados do cliente são obrigatórios");
         }
 
         String doc = cliente.getDocumento();
 
-        // Validação de documento usando interfaces funcionais personalizadas
         if (cliente instanceof PessoaFisica) {
             if (!VALIDADOR_CPF.validar(doc)) {
                 throw new IllegalArgumentException("CPF deve conter apenas 11 numeros, e nada de letras");
@@ -51,7 +47,6 @@ public class ClienteService {
             }
         }
 
-        // Verifica se já existe cliente com o mesmo documento (CPF/CNPJ)
         if (repository.buscarPorDocumento(cliente.getDocumento()).isPresent()) {
             throw new IllegalArgumentException("Já existe um cliente com este CPF/CNPJ cadastrado");
         }
@@ -68,46 +63,28 @@ public class ClienteService {
         return repository.listarTodos();
     }
 
-    /**
-     * Lista clientes com paginação.
-     */
     public List<Cliente> listarComPaginacao(int pagina, int tamanhoPagina) {
         return repository.listarComPaginacao(pagina, tamanhoPagina);
     }
 
-    /**
-     * Busca clientes usando Predicate personalizado.
-     */
     public List<Cliente> buscarComFiltro(Predicate<Cliente> filtro) {
         return repository.buscarComFiltro(filtro);
     }
 
-    /**
-     * Lista apenas Pessoas Físicas.
-     */
     public List<Cliente> listarPessoasFisicas() {
         Predicate<Cliente> ehPessoaFisica = c -> c instanceof PessoaFisica;
         return repository.buscarComFiltro(ehPessoaFisica);
     }
 
-    /**
-     * Lista apenas Pessoas Jurídicas.
-     */
     public List<Cliente> listarPessoasJuridicas() {
         Predicate<Cliente> ehPessoaJuridica = c -> c instanceof PessoaJuridica;
         return repository.buscarComFiltro(ehPessoaJuridica);
     }
 
-    /**
-     * Executa uma ação em cada cliente usando Consumer.
-     */
     public void forEach(Consumer<Cliente> acao) {
         repository.listarTodos().forEach(acao);
     }
 
-    /**
-     * Imprime todos os clientes de forma formatada usando Consumer.
-     */
     public void imprimirClientes() {
         Consumer<Cliente> impressora = cliente -> {
             String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
@@ -117,9 +94,6 @@ public class ClienteService {
         forEach(impressora);
     }
 
-    /**
-     * Ordena clientes por nome.
-     */
     public List<Cliente> listarOrdenadosPorNome() {
         return repository.listarTodos().stream()
                 .sorted(Comparator.comparing(Cliente::getNome))

@@ -43,7 +43,6 @@ public class Veiculo implements Serializable {
         this.tipo = tipo;
     }
 
-    // ==== Getters conforme o UML ====
 
     public String getPlaca() {
         return placa;
@@ -61,7 +60,6 @@ public class Veiculo implements Serializable {
         return disponivel;
     }
 
-    // ==== Setters previstos no UML ====
 
     /**
      * Conforme o UML, o "setter" exposto é setTipoVeiculo().
@@ -76,7 +74,6 @@ public class Veiculo implements Serializable {
         this.disponivel = disponivel;
     }
 
-    // ==== Utilidades ====
 
     /** Chave natural pensada para repositórios genéricos. */
     public String getIdentificador() {
