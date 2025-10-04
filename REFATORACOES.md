@@ -387,22 +387,5 @@ cat relatorios/faturamento_*.txt
 
 ---
 
-## ✅ Checklist de Refatoração (Completo)
-
-- ✅ Substituir laços de repetição por **Streams** nas buscas e filtros
-- ✅ Implementar **paginação com Stream.skip() e Stream.limit()** nas listagens
-- ✅ Criar **Comparator com lambda** para ordenações de clientes e veículos
-- ✅ Usar **Predicate** para encapsular regras de validação de CPF/CNPJ
-- ✅ Usar **Function** para calcular valores de aluguel e aplicar descontos
-- ✅ Usar **Consumer** para imprimir dados formatados no console
-- ✅ Usar **Supplier** para gerar dados de teste (clientes e veículos fictícios)
-- ✅ Persistir veículos, clientes e aluguéis em **arquivos** utilizando `Files`
-- ✅ Implementar leitura/escrita com **InputStream/OutputStream** para dados
-- ✅ Criar **interfaces funcionais personalizadas** para regras específicas
-- ✅ Documentar refatorações realizadas
-
----
-
-**Data da Refatoração:** Outubro 2025
 **Refatorado por:** Claude Code
 **Status:** ✅ **Concluído**
