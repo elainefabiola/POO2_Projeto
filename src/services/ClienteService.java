@@ -1,13 +1,12 @@
 package services;
 
+import functional.TipoClienteStrategy;
+import functional.ValidadorDocumento;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import functional.ValidadorDocumento;
 import model.Cliente;
-import model.PessoaFisica;
-import model.PessoaJuridica;
 import repositories.ClienteRepository;
 
 public class ClienteService {
@@ -33,18 +32,18 @@ public class ClienteService {
             throw new IllegalArgumentException("Dados do cliente são obrigatórios");
         }
 
-        String doc = cliente.getDocumento();
+        // Refatorado: usando Predicate composto para validação
+        Predicate<Cliente> validacaoPF = TipoClienteStrategy.EH_PESSOA_FISICA
+                .and(c -> VALIDADOR_CPF.validar(c.getDocumento()));
+        Predicate<Cliente> validacaoPJ = TipoClienteStrategy.EH_PESSOA_JURIDICA
+                .and(c -> VALIDADOR_CNPJ.validar(c.getDocumento()));
 
-        if (cliente instanceof PessoaFisica) {
-            if (!VALIDADOR_CPF.validar(doc)) {
-                throw new IllegalArgumentException("CPF deve conter apenas 11 numeros, e nada de letras");
-            }
+        if (TipoClienteStrategy.EH_PESSOA_FISICA.test(cliente) && !validacaoPF.test(cliente)) {
+            throw new IllegalArgumentException("CPF deve conter apenas 11 numeros, e nada de letras");
         }
 
-        if (cliente instanceof PessoaJuridica) {
-            if (!VALIDADOR_CNPJ.validar(doc)) {
-                throw new IllegalArgumentException("CNPJ deve conter apenas 14 numeros, e nada de letras");
-            }
+        if (TipoClienteStrategy.EH_PESSOA_JURIDICA.test(cliente) && !validacaoPJ.test(cliente)) {
+            throw new IllegalArgumentException("CNPJ deve conter apenas 14 numeros, e nada de letras");
         }
 
         if (repository.buscarPorDocumento(cliente.getDocumento()).isPresent()) {
@@ -72,13 +71,11 @@ public class ClienteService {
     }
 
     public List<Cliente> listarPessoasFisicas() {
-        Predicate<Cliente> ehPessoaFisica = c -> c instanceof PessoaFisica;
-        return repository.buscarComFiltro(ehPessoaFisica);
+        return repository.buscarComFiltro(TipoClienteStrategy.EH_PESSOA_FISICA);
     }
 
     public List<Cliente> listarPessoasJuridicas() {
-        Predicate<Cliente> ehPessoaJuridica = c -> c instanceof PessoaJuridica;
-        return repository.buscarComFiltro(ehPessoaJuridica);
+        return repository.buscarComFiltro(TipoClienteStrategy.EH_PESSOA_JURIDICA);
     }
 
     public void forEach(Consumer<Cliente> acao) {
@@ -86,8 +83,9 @@ public class ClienteService {
     }
 
     public void imprimirClientes() {
+        // Refatorado: usando TipoClienteStrategy para determinar tipo
         Consumer<Cliente> impressora = cliente -> {
-            String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
+            String tipo = TipoClienteStrategy.TIPO_ABREVIADO.apply(cliente);
             System.out.printf("[%s] %s - Doc: %s%n",
                     tipo, cliente.getNome(), cliente.getDocumento());
         };
