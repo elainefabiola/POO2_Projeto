@@ -149,12 +149,14 @@ class MenuCliente {
             return;
         }
 
-        for (int i = 0; i < clientes.size(); i++) {
-            Cliente cliente = clientes.get(i);
+        // Refatorado: usando Streams + Consumer + AtomicInteger para numeração
+            java.util.concurrent.atomic.AtomicInteger contador = new java.util.concurrent.atomic.AtomicInteger(1);
+            java.util.function.Consumer<Cliente> impressorCliente = cliente -> {
             String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
             System.out.printf("%d. [%s] %s - %s%n", 
-                i + 1, tipo, cliente.getNome(), cliente.getDocumento());
-        }
+                contador.getAndIncrement(), tipo, cliente.getNome(), cliente.getDocumento());
+        };
+        clientes.stream().forEach(impressorCliente);
     }
 
     private void buscarClientePorNome() {
@@ -168,11 +170,13 @@ class MenuCliente {
             System.out.println("Nenhum cliente encontrado.");
         } else {
             System.out.println("\n=== CLIENTES ENCONTRADOS ===");
-            for (Cliente cliente : clientes) {
+            // Refatorado: usando Consumer para impressão funcional
+            java.util.function.Consumer<Cliente> impressorClienteEncontrado = cliente -> {
                 String tipo = cliente instanceof PessoaFisica ? "PF" : "PJ";
                 System.out.printf("[%s] %s - %s%n", 
                     tipo, cliente.getNome(), cliente.getDocumento());
-            }
+            };
+            clientes.stream().forEach(impressorClienteEncontrado);
         }
     }
 
@@ -266,13 +270,15 @@ class MenuVeiculo {
             return;
         }
 
-        for (int i = 0; i < veiculos.size(); i++) {
-            Veiculo veiculo = veiculos.get(i);
+        // Refatorado: usando Streams + Consumer + AtomicInteger para numeração
+        java.util.concurrent.atomic.AtomicInteger contador = new java.util.concurrent.atomic.AtomicInteger(1);
+        java.util.function.Consumer<Veiculo> impressorVeiculo = veiculo -> {
             String status = veiculo.isDisponivel() ? "DISPONÍVEL" : "ALUGADO";
             System.out.printf("%d. %s - %s [%s] - R$ %.2f/dia - %s%n", 
-                i + 1, veiculo.getPlaca(), veiculo.getNome(), 
+                contador.getAndIncrement(), veiculo.getPlaca(), veiculo.getNome(), 
                 veiculo.getTipo(), veiculo.getTipo().getValorDiaria(), status);
-        }
+        };
+        veiculos.stream().forEach(impressorVeiculo);
     }
 
     private void listarDisponiveis() {
@@ -284,12 +290,14 @@ class MenuVeiculo {
             return;
         }
 
-        for (int i = 0; i < disponiveis.size(); i++) {
-            Veiculo veiculo = disponiveis.get(i);
+        // Refatorado: usando Streams + Consumer + AtomicInteger para numeração
+        java.util.concurrent.atomic.AtomicInteger contador = new java.util.concurrent.atomic.AtomicInteger(1);
+        java.util.function.Consumer<Veiculo> impressorVeiculoDisponivel = veiculo -> {
             System.out.printf("%d. %s - %s [%s] - R$ %.2f/dia%n", 
-                i + 1, veiculo.getPlaca(), veiculo.getNome(), 
+                contador.getAndIncrement(), veiculo.getPlaca(), veiculo.getNome(), 
                 veiculo.getTipo(), veiculo.getTipo().getValorDiaria());
-        }
+        };
+        disponiveis.stream().forEach(impressorVeiculoDisponivel);
     }
 
     private void buscarVeiculoPorNome() {
