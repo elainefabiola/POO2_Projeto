@@ -3,6 +3,9 @@ package model;
 public class PessoaFisica extends Cliente {
 
     public PessoaFisica(String cpf, String nome) {
+        if (nome != null && nome.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("Nome de pessoa física não pode conter números");
+        }
         super.setDocumento(cpf);
         super.setNome(nome);
     }
