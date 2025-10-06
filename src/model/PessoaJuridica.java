@@ -1,16 +1,14 @@
 package model;
 
 public class PessoaJuridica extends Cliente {
-    private String cnpj;
 
     public PessoaJuridica(String cnpj, String nome) {
         super.setDocumento(cnpj);
         super.setNome(nome);
-        this.cnpj = cnpj;
     }
 
     public String getCnpj() {
-        return cnpj;
+        return getDocumento();
     }
 
     @Override

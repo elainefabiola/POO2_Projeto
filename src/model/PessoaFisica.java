@@ -1,16 +1,14 @@
 package model;
 
 public class PessoaFisica extends Cliente {
-    private String cpf;
 
     public PessoaFisica(String cpf, String nome) {
-
         super.setDocumento(cpf);
         super.setNome(nome);
     }
 
     public String getCpf() {
-        return cpf;
+        return getDocumento();
     }
 
     @Override
